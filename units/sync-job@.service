@@ -1,0 +1,7 @@
+[Unit]
+Description=Sync Job for %i
+
+[Install]
+ExecCondition=$PREFIX/bin/sync-condition -job %i
+WantedBy=sync.target
+TimeoutSec=${SYNC_TIMEOUT:-300}

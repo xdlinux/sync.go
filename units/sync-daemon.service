@@ -1,0 +1,11 @@
+[Unit]
+Description=Sync Daemon that Controlls Intervals and Locks
+After=syslog.target
+After=sync-daemon.socket
+Requires=sync-daemon.socket
+
+[Service]
+ExecStart=$PREFIX/bin/sync-daemon -conf $PREFIX/etc/config.yml
+
+[Install]
+WantedBy=sync.target

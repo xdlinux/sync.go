@@ -1,0 +1,4 @@
+[Unit]
+Description=Mirror Sync Target
+Requires=sync-daemon.service
+After=multi-user.target

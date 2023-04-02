@@ -1,0 +1,11 @@
+daemon:
+  cwd: /var/run/sync-daemon
+  timezone: Asia/Shanghai
+  max_parallel: 10
+  status_output: /srv/http/mirrorz.root/status.json
+  default: # default options for jobs
+    cooldown: 10 # minutes
+
+jobs:
+  apache: # names are gotten from %i in unit files
+    cooldown: 20
