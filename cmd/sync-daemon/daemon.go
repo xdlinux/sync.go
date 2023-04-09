@@ -4,25 +4,26 @@ import (
 	"fmt"
 	"net"
 	"os"
-	"sync"
 	"time"
 
 	"flag"
 
 	"github.com/coreos/go-systemd/v22/activation"
+	"github.com/xdlinux/sync.go/config"
 	"github.com/xdlinux/sync.go/logs"
 )
 
-var conf = flag.String("conf", "config.yml", "config file for sync-daemon")
-var parseFlags = sync.Once{}
+var config_path = flag.String("conf", "config.yml", "config file for sync-daemon")
+var cfg *config.Config
 
 func init() {
-	parseFlags.Do(flag.Parse)
+	flag.Parse()
+	cfg = config.Parse(*config_path)
 }
 
 func main() {
 	logs.Info("starting sync-daemon", nil)
-	location, err := time.LoadLocation(config.Daemon.TZ)
+	location, err := time.LoadLocation(cfg.Daemon.TZ)
 	if err != nil {
 		logs.Error("Unable to set location", nil)
 		os.Exit(1)

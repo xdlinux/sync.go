@@ -27,7 +27,7 @@ func init() {
 		log.Printf("[WARN] msg=journalctl not enabled, falling back to stdout/stderr")
 		dispatch = func(msg string, level journal.Priority, tags map[string]string) error {
 			log.Printf("[%s]%s msg=%s", map[journal.Priority]string{
-				0: "EMERG", 1: "ALERT", 2: "CRITICAL", 3: "ERROR", 6: "INFO",
+				3: "ERROR", 4: "WARN", 6: "INFO",
 			}[level], formatTags(tags), msg)
 			return nil
 		}
@@ -43,6 +43,10 @@ func ensureDispatch(msg string, level journal.Priority, tags map[string]string) 
 
 func Info(msg string, tags map[string]string) {
 	go ensureDispatch(msg, journal.PriInfo, tags)
+}
+
+func Warn(msg string, tags map[string]string) {
+	go ensureDispatch(msg, journal.PriWarning, tags)
 }
 
 func Error(msg string, tags map[string]string) {

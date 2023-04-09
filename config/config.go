@@ -1,25 +1,29 @@
-package main
+package config
 
 import (
-	"flag"
 	"os"
 
 	"github.com/xdlinux/sync.go/logs"
 	"gopkg.in/yaml.v3"
 )
 
-var config struct {
+var readFile = os.ReadFile // for mocking
+
+type Config struct {
 	Daemon struct {
-		TZ string `yaml:"timezone"`
+		TZ     string `yaml:"timezone"`
+		Secret string `yaml:"secret"`
 	} `yaml:"daemon"`
+	Jobs *JobConfig
 }
 
-func init() {
-	parseFlags.Do(flag.Parse)
-	data, err := os.ReadFile(*conf)
+func Parse(file string) *Config {
+	var config Config
+	data, err := readFile(file)
 	if err != nil {
 		logs.Error("Error reading config file, read error", map[string]string{
 			"error": err.Error(),
+			"file":  file,
 		})
 		panic("Error reading config file")
 	}
@@ -27,7 +31,9 @@ func init() {
 	if err != nil {
 		logs.Error("Error reading config file, unmarshal error", map[string]string{
 			"error": err.Error(),
+			"file":  file,
 		})
 		panic("Error reading config file")
 	}
+	return &config
 }
